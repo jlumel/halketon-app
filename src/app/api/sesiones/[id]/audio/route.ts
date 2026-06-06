@@ -15,9 +15,11 @@ export async function GET(
     return new Response("No encontrado", { status: 404 });
   }
 
+  // audio_path es relativo y siempre empieza con "storage/…"
+  // Anclarlo explícitamente evita que Turbopack trace todo el proyecto.
   const absPath = path.isAbsolute(sesion.audio_path)
     ? sesion.audio_path
-    : path.join(process.cwd(), sesion.audio_path);
+    : path.join(process.cwd(), "storage", path.basename(sesion.audio_path));
 
   if (!fs.existsSync(absPath)) {
     return new Response("Archivo no disponible", { status: 404 });

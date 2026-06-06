@@ -9,9 +9,11 @@ const WHISPER_URL =
  * y devuelve la transcripción. Todo local, sin servicios externos.
  */
 export async function transcribe(audioPath: string): Promise<string> {
+  // audio_path siempre apunta a storage/<timestamp>.webm
+  // Anclar explícitamente el subfolder evita que Turbopack trace todo el proyecto.
   const absPath = path.isAbsolute(audioPath)
     ? audioPath
-    : path.join(process.cwd(), audioPath);
+    : path.join(process.cwd(), "storage", path.basename(audioPath));
 
   const buffer = fs.readFileSync(absPath);
   const form = new FormData();
