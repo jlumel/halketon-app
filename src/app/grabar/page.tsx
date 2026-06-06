@@ -144,7 +144,8 @@ export default function GrabarPage() {
         form.append("promotor", promotor);
         form.append("programa", programaId);
         form.append("beneficiario", beneficiario);
-        const res = await fetch("/api/audio", { method: "POST", body: form });
+        const pcUrl = process.env.NEXT_PUBLIC_PC_URL ?? "";
+        const res = await fetch(`${pcUrl}/api/audio`, { method: "POST", body: form });
         if (!res.ok) throw new Error("upload failed");
         setEstado("enviado");
       } catch {

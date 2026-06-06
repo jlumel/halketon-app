@@ -87,7 +87,8 @@ export async function flushPending(): Promise<number> {
       form.append("promotor", item.promotor);
       form.append("programa", item.programa);
       form.append("beneficiario", item.beneficiario);
-      const res = await fetch("/api/audio", { method: "POST", body: form });
+      const pcUrl = process.env.NEXT_PUBLIC_PC_URL ?? "";
+      const res = await fetch(`${pcUrl}/api/audio`, { method: "POST", body: form });
       if (res.ok) {
         await deletePending(item.id);
         enviados++;

@@ -5,6 +5,17 @@ import type { BeneficiarioInput } from "@/lib/types";
 
 export const runtime = "nodejs";
 
+// CORS: el promotor usa la PWA desde Vercel y necesita postear al PC local.
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": process.env.CORS_ORIGIN ?? "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+  return new Response(null, { status: 204, headers: CORS_HEADERS });
+}
+
 const N8N_WEBHOOK =
   process.env.N8N_WEBHOOK_URL ??
   "http://localhost:5678/webhook/procesar-audio";
@@ -79,7 +90,7 @@ export async function POST(request: Request) {
     dispararFallback(sessionId, relativeAudioPath, programa);
   }
 
-  return Response.json({ session_id: sessionId, status: "en_cola" });
+  return Response.json({ session_id: sessionId, status: "en_cola" }, { headers: CORS_HEADERS });
 }
 
 /**
