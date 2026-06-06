@@ -41,3 +41,11 @@ yarn-error.log*
 next-env.d.ts
 
 .claude
+
+# vendored skill repos (reference material, not part of the app)
+/skills/
+
+# local runtime data — SQLite DB and raw audios never leave the machine
+/data/
+/storage/*
+!/storage/.gitkeep
